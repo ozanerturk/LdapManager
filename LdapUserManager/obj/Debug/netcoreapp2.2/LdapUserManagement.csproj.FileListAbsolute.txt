@@ -1,9 +1,0 @@
-c:\WORK\POC\LdapUserManager\LdapUserManager\bin\Debug\netcoreapp2.2\LdapUserManagement.deps.json
-c:\WORK\POC\LdapUserManager\LdapUserManager\bin\Debug\netcoreapp2.2\LdapUserManagement.dll
-c:\WORK\POC\LdapUserManager\LdapUserManager\bin\Debug\netcoreapp2.2\LdapUserManagement.pdb
-c:\WORK\POC\LdapUserManager\LdapUserManager\obj\Debug\netcoreapp2.2\LdapUserManagement.csprojAssemblyReference.cache
-c:\WORK\POC\LdapUserManager\LdapUserManager\obj\Debug\netcoreapp2.2\LdapUserManagement.csproj.CoreCompileInputs.cache
-c:\WORK\POC\LdapUserManager\LdapUserManager\obj\Debug\netcoreapp2.2\LdapUserManagement.AssemblyInfoInputs.cache
-c:\WORK\POC\LdapUserManager\LdapUserManager\obj\Debug\netcoreapp2.2\LdapUserManagement.AssemblyInfo.cs
-c:\WORK\POC\LdapUserManager\LdapUserManager\obj\Debug\netcoreapp2.2\LdapUserManagement.dll
-c:\WORK\POC\LdapUserManager\LdapUserManager\obj\Debug\netcoreapp2.2\LdapUserManagement.pdb
