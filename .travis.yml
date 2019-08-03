@@ -8,4 +8,4 @@ install:
   - dotnet restore LdapUserManager.sln
 script:
   - dotnet build
-  - dotnet test
+  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info 
