@@ -1,0 +1,11 @@
+language: csharp
+solution: LdapUserManager.sln
+
+dotnet: 2.2
+mono: none
+
+install:
+  - dotnet restore LdapUserManager.sln
+script:
+  - dotnet build
+  - dotnet test
