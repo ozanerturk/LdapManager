@@ -8,4 +8,7 @@ install:
   - dotnet restore LdapUserManager.sln
 script:
   - dotnet build
-  - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info 
+  - cd minicover
+  - dotnet minicover instrument --workdir ../ --assemblies LdapUserManager.Test/**/bin/**/*.dll --sources LdapUserManager/**/*.cs 
+  - dotnet minicover reset
+  - dotnet minicover coverallsreport --root-path ../ --workdir ../ --repo-token "$coverallToken"

@@ -4,7 +4,9 @@ project.lock.json
 .DS_Store
 *.pyc
 nupkg/
-
+coverage-html
+coverage.json
+coverage.hits
 # Visual Studio Code
 .vscode
 
