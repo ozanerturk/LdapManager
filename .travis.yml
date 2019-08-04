@@ -6,8 +6,10 @@ mono: none
 
 install:
   - dotnet restore LdapUserManager.sln
+before_script: cd minicover
 script:
-  - dotnet build
+  - dotnet build ../
+  - dotnet test ../
   - cd minicover
   - dotnet minicover instrument --workdir ../ --assemblies LdapUserManager.Test/**/bin/**/*.dll --sources LdapUserManager/**/*.cs 
   - dotnet minicover reset
