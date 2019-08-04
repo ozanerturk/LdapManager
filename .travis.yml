@@ -9,3 +9,4 @@ install:
 script:
   - dotnet build 
   - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+  - ./tools/csmacnz.Coveralls --opencover -i ./LdapUserManager.Test/coverage.opencover.xml --repoToken "$coverallToken"
