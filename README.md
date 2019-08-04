@@ -30,7 +30,7 @@ public class CustomUserModel
 }
 ```
 
-And open connection, create manager instance and fetch user based on config parameters
+And open connection, create manager instance and fetch users based on the configuration
 
 ```csharp
   var config = new LdapConfig(){
@@ -53,13 +53,13 @@ using(var connection = ldapConnectionFactory.OpenConnection(config)){
 }
 ```
 
-or verify 
+or verify a user
 
 ```csharp
 using(var connection = ldapConnectionFactory.OpenConnection(config)){
 
     ILdapManager manager = new LdapManager(connection);
-    IList<CustomUserModel> users = manager.Verify<CustomUserModel>("tbmm01","33301");
+    CustomUserModel users = manager.Verify<CustomUserModel>("tbmm01","33301");
     
 }
 ```
