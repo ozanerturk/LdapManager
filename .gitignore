@@ -8,6 +8,9 @@ coverage.*.xml
 # Visual Studio Code
 .vscode
 
+#tools additional tools for travis, test report etc
+tools/
+coverage/
 # Rider
 .idea
 
