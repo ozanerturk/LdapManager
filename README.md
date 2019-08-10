@@ -1,4 +1,5 @@
-# SimpleLdapUserManager
+# Simple Ldap Manager
+## Read your user entry easily
 
 [![Build Status](https://travis-ci.org/ozanerturk/LdapUserManager.svg?branch=master)](https://travis-ci.org/ozanerturk/LdapUserManager)
 [![codecov](https://codecov.io/gh/ozanerturk/LdapUserManager/branch/master/graph/badge.svg)](https://codecov.io/gh/ozanerturk/LdapUserManager)
@@ -59,7 +60,7 @@ or verify a user
 using(var connection = ldapConnectionFactory.OpenConnection(config)){
 
     ILdapManager manager = new LdapManager(connection);
-    CustomUserModel users = manager.Verify<CustomUserModel>("tbmm01","33301");
+    LoginResult users = manager.Login<CustomUserModel>("tbmm01","33301");
     
 }
 ```
