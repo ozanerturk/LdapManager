@@ -12,4 +12,4 @@ script:
 after_success: 
   - curl -s https://codecov.io/bash > codecov
   - chmod +x codecov
-  - ./codecov -f "LdapManager.Test\coverage.opencover.xml" -t "$codecovToken"
+  - ./codecov -f "LdapManager.Test/coverage.opencover.xml" -t "$codecovToken"
