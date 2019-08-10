@@ -10,5 +10,6 @@ script:
   - dotnet build 
   - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
 after_success: 
-  - dotnet tool install coveralls.net --version 1.0.0 --tool-path tools/coveralls
-  - ./tools/coveralls/csmacnz.Coveralls --opencover -i ./LdapManager.Test/coverage.opencover.xml --repoToken "$coverallToken"
+  - curl -s https://codecov.io/bash > codecov
+  - chmod +x codecov
+  - .\codecov -f "LdapManager.Test\coverage.opencover.xml" -t "$codecovToken"
