@@ -4,7 +4,6 @@ Easily read ldap user enrties and authenticate them.
 
 [![Build Status](https://travis-ci.org/ozanerturk/LdapManager.svg?branch=master)](https://travis-ci.org/ozanerturk/LdapUserManager)
 [![codecov](https://codecov.io/gh/ozanerturk/LdapManager/branch/master/graph/badge.svg)](https://codecov.io/gh/ozanerturk/LdapManager)
-
 This is a simple library that helps to map and authenticate Ldap users easily. It is handling common connection case with provided configuration.
 
 
