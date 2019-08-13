@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace LdapUserManager.Extensions
 {
     [Serializable]
-    internal class LdapManagerException : Exception
+    public class LdapManagerException : Exception
     {
         public LdapManagerException()
         {
