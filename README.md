@@ -3,7 +3,7 @@
 Easily read ldap user enrties and authenticate them. 
 
 [![Build Status](https://travis-ci.org/ozanerturk/LdapManager.svg?branch=master)](https://travis-ci.org/ozanerturk/LdapUserManager)
-[![codecov](https://codecov.io/gh/ozanerturk/LdapManager/branch/master/graph/badge.svg)](https://codecov.io/gh/ozanerturk/LdapUserManager)
+[![codecov](https://codecov.io/gh/ozanerturk/LdapManager/branch/master/graph/badge.svg)](https://codecov.io/gh/ozanerturk/LdapManager)
 
 This is a simple library that helps to map and authenticate Ldap users easily. It is handling common connection case with provided configuration.
 
@@ -13,7 +13,7 @@ This is a simple library that helps to map and authenticate Ldap users easily. I
 
 ## Usage
 
-Create your own custom usermodel class like below. [LdapExtract](LdapUserManager/Attribute/LdapExtractAttribute.cs) attribute indicates the attribute of LDAP entry
+Create your own custom usermodel class like below. [LdapExtract](LdapManager/Attribute/LdapExtractAttribute.cs) attribute indicates the attribute of LDAP entry
 ```csharp
 public class CustomUserModel
 {
