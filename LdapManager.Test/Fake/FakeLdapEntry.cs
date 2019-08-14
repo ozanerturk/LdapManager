@@ -62,6 +62,11 @@ namespace LdapUserManager.Fake
             this.attrs.Add(new LdapAttribute(s, v));
             return this;
         }
+  public FakeLdapEntry WithBound(string s, string[] v)
+        {
+            return this;
+        }
+     
     }
 
 }

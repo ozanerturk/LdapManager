@@ -15,6 +15,7 @@ namespace LdapUserManager.Tests
     public partial class LdapManagerTests
     {
 
+        #region Success
         [Theory]
         [InlineData(10, new string[] { "someAttr1", "someAttr2" })]
         public void SuccessfullyFetchUser(int resultCount, string[] attributes)
@@ -118,34 +119,6 @@ namespace LdapUserManager.Tests
             Assert.Equal(resultCount, entries.Count);
         }
 
-        [Theory]
-        [InlineData("")]
-        [InlineData(null)]
-        public void Fail_Login_UsernameNullOrEmpty(string username)
-        {
-            var password = "validPasword";
-            var usernameAttribute = "UserNameAttribute";
-            var attributes = new string[] { "att1", "att2" };
-            //arrange
-            var fakeConfig = new FakeLdapConfig().WithDefaults();
-            var fakeLdapManagerConnection = new FakeLdapManagerConnection();
-            var mockFactory = new Mock<ILdapConnectionFactory>();
-            var mockProxy = new Mock<ILdapProxyClient>();
-
-            mockFactory.Setup(x => x.OpenConnection(It.IsAny<LdapConfig>())).Returns(fakeLdapManagerConnection);
-            var factory = mockFactory.Object;
-            //act
-            LoginResult<LdapEntry> result = null;
-            Action action;
-            using (var connection = factory.OpenConnection(fakeConfig))
-            {
-                var manager = new LdapManager(mockProxy.Object);
-                action = () => result = manager.Login(username, password, usernameAttribute, attributes);
-            }
-            var exception = Assert.Throws<LdapManagerException>(action);
-            Assert.Equal("'username' field should not be empty", exception.Message);
-            //assert
-        }
 
         [Fact]
         public void Success_Login_LdpaEntry()
@@ -259,5 +232,133 @@ namespace LdapUserManager.Tests
             Assert.Equal(dn, result.User.DN);
             Assert.Equal(nameWithoutAt, result.User.getAttribute(usernameAttribute).StringValue);
         }
+        #endregion
+        #region Fails
+        [Theory]
+        [InlineData("")]
+        [InlineData(null)]
+        public void Fail_Login_UsernameNullOrEmpty(string username)
+        {
+            var password = "validPasword";
+            var usernameAttribute = "UserNameAttribute";
+            var attributes = new string[] { "att1", "att2" };
+            //arrange
+            var fakeConfig = new FakeLdapConfig().WithDefaults();
+            var fakeLdapManagerConnection = new FakeLdapManagerConnection();
+            var mockFactory = new Mock<ILdapConnectionFactory>();
+            var mockProxy = new Mock<ILdapProxyClient>();
+
+            mockFactory.Setup(x => x.OpenConnection(It.IsAny<LdapConfig>())).Returns(fakeLdapManagerConnection);
+            var factory = mockFactory.Object;
+            //act
+            LoginResult<LdapEntry> result = null;
+            Action action;
+            using (var connection = factory.OpenConnection(fakeConfig))
+            {
+                var manager = new LdapManager(mockProxy.Object);
+                action = () => result = manager.Login(username, password, usernameAttribute, attributes);
+            }
+            var exception = Assert.Throws<LdapManagerException>(action);
+            Assert.Equal("'username' field should not be empty", exception.Message);
+            //assert
+        }
+
+        [Fact]
+        public void Fail_Login_InvalidCredentials()
+        {
+            var username = "validUsername";
+            var password = "invalidPassword";
+            //arrange
+            var fakeConfig = new FakeLdapConfig().WithDefaults();
+            var fakeLdapManagerConnection = new FakeLdapManagerConnection();
+            var mockFactory = new Mock<ILdapConnectionFactory>();
+            var mockProxy = new Mock<ILdapProxyClient>();
+            var fakeLoginEntry = new FakeLdapEntry();
+            var ldapException = new LdapException(It.IsAny<string>(), LdapException.INVALID_CREDENTIALS, It.IsAny<string>());
+
+            mockFactory.Setup(x => x.OpenConnection(It.IsAny<LdapConfig>())).Returns(fakeLdapManagerConnection);
+            mockProxy.Setup(x => x.FindUser(It.IsAny<string[]>(), It.IsAny<string>(), It.IsAny<string>())).Returns(fakeLoginEntry);
+            mockProxy.Setup(x => x.Bind(It.IsAny<string>(), It.IsAny<string>())).Throws(ldapException);
+            var factory = mockFactory.Object;
+            //act
+            LoginResult<FakeCustomUserModel> result = null;
+            using (var connection = factory.OpenConnection(fakeConfig))
+            {
+                var manager = new LdapManager(mockProxy.Object);
+                result = manager.Login<FakeCustomUserModel>(username, password);
+            }
+
+            //assert
+            Assert.False(result.IsAuthenticated);
+            Assert.NotNull(result.Exception);
+            Assert.Equal(LdapException.INVALID_CREDENTIALS, result.Exception.ResultCode);
+            //assert
+        }
+
+
+        [Fact]
+        public void Fail_Login_Null()
+        {
+            var username = "validUsername";
+            var password = "invalidPassword";
+            //arrange
+            var fakeConfig = new FakeLdapConfig().WithDefaults();
+            var fakeLdapManagerConnection = new FakeLdapManagerConnection();
+            var mockFactory = new Mock<ILdapConnectionFactory>();
+            var mockProxy = new Mock<ILdapProxyClient>();
+            var ldapException = new LdapException(It.IsAny<string>(), LdapException.INVALID_CREDENTIALS, It.IsAny<string>());
+
+            mockFactory.Setup(x => x.OpenConnection(It.IsAny<LdapConfig>())).Returns(fakeLdapManagerConnection);
+            mockProxy.Setup(x => x.FindUser(It.IsAny<string[]>(), It.IsAny<string>(), It.IsAny<string>())).Returns((LdapEntry)null);
+            var factory = mockFactory.Object;
+            //act
+            LoginResult<FakeCustomUserModel> result = null;
+            using (var connection = factory.OpenConnection(fakeConfig))
+            {
+                var manager = new LdapManager(mockProxy.Object);
+                result = manager.Login<FakeCustomUserModel>(username, password);
+            }
+
+            //assert
+            Assert.False(result.IsAuthenticated);
+            Assert.NotNull(result.Exception);
+            Assert.Equal(LdapException.NO_RESULTS_RETURNED, result.Exception.ResultCode);
+            //assert
+        }
+
+        [Fact]
+        public void Fail_Login_NotBound()
+        {
+            var username = "validUsername";
+            var password = "invalidPassword";
+            //arrange
+            var fakeConfig = new FakeLdapConfig().WithDefaults();
+            var fakeLdapManagerConnection = new FakeLdapManagerConnection();
+            var mockFactory = new Mock<ILdapConnectionFactory>();
+            var mockProxy = new Mock<ILdapProxyClient>();
+            var fakeLoginEntry = new FakeLdapEntry();
+            var ldapException = new LdapException(It.IsAny<string>(), LdapException.INVALID_CREDENTIALS, It.IsAny<string>());
+
+            mockFactory.Setup(x => x.OpenConnection(It.IsAny<LdapConfig>())).Returns(fakeLdapManagerConnection);
+            mockProxy.Setup(x => x.FindUser(It.IsAny<string[]>(), It.IsAny<string>(), It.IsAny<string>())).Returns(fakeLoginEntry);
+            mockProxy.Setup(x => x.Bind(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
+
+            var factory = mockFactory.Object;
+            //act
+            LoginResult<FakeCustomUserModel> result = null;
+            using (var connection = factory.OpenConnection(fakeConfig))
+            {
+                var manager = new LdapManager(mockProxy.Object);
+                result = manager.Login<FakeCustomUserModel>(username, password);
+            }
+
+            //assert
+            Assert.False(result.IsAuthenticated);
+            Assert.NotNull(result.Exception);
+            Assert.Equal(LdapException.AUTH_UNKNOWN, result.Exception.ResultCode);
+            //assert
+        }
+
     }
+    #endregion
 }

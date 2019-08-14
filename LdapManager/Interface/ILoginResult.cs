@@ -1,3 +1,4 @@
+using System;
 using Novell.Directory.Ldap;
 
 namespace LdapUserManager.Result

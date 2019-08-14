@@ -1,3 +1,4 @@
+using System;
 using Novell.Directory.Ldap;
 
 namespace LdapUserManager.Result
@@ -12,6 +13,12 @@ namespace LdapUserManager.Result
 
         public LoginResult(LdapException ex){
             IsAuthenticated = false;
+            Exception = ex;
+        }
+
+        public LoginResult(T user,LdapException ex){
+            IsAuthenticated = false;
+            User = user;
             Exception = ex;
         }
 

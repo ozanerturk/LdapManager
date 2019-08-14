@@ -13,10 +13,6 @@ namespace LdapUserManager
     {
         private ILdapProxyClient _ldapProxy;
 
-        public LdapManager(ILdapManagerConnection connection) : this(new LdapProxyClient(connection))
-        {
-        }
-
         public LdapManager(ILdapProxyClient ldapProxy)
         {
             this._ldapProxy = ldapProxy;
@@ -125,13 +121,18 @@ namespace LdapUserManager
                     {
                         return new LoginResult<LdapEntry>(result);
                     }
+                    else
+                    {
+                        var ex = new LdapException(LdapException.resultCodeToString(LdapException.AUTH_UNKNOWN), LdapException.AUTH_UNKNOWN, "entry could not able to bind");
+                        return new LoginResult<LdapEntry>(result, ex);
+                    }
                 }
             }
             catch (LdapException ex)
             {
                 return new LoginResult<LdapEntry>(ex);
             }
-            return null;
+            return new LoginResult<LdapEntry>(new LdapException(LdapException.resultCodeToString(LdapException.NO_RESULTS_RETURNED), LdapException.NO_RESULTS_RETURNED, "No result Returned"));
         }
 
     }
