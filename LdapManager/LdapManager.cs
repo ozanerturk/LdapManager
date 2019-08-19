@@ -13,6 +13,10 @@ namespace LdapUserManager
     {
         private ILdapProxyClient _ldapProxy;
 
+        public LdapManager(ILdapManagerConnection connection) : this(new LdapProxyClient(connection))
+        {
+
+        }
         public LdapManager(ILdapProxyClient ldapProxy)
         {
             this._ldapProxy = ldapProxy;

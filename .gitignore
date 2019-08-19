@@ -7,7 +7,8 @@ nupkg/
 coverage.*.xml
 # Visual Studio Code
 .vscode
-
+.svn
+example
 #tools additional tools for travis, test report etc
 tools/
 coverage/
